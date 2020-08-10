@@ -6,8 +6,8 @@ namespace MakelaarCounter.Models
     public class Agent
     {
         [JsonProperty("MakelaarId")]
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [JsonProperty("MakelaarNaam")]
-        public string Name { get; private set; }
+        public string Name { get; set; }
     }
 }

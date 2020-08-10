@@ -5,6 +5,7 @@
         public AgentListingCount(Agent agent)
         {
             Agent = agent;
+            ListingCount = 1;
         }
 
         public Agent Agent { get; }

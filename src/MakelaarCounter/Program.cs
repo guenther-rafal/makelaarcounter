@@ -1,6 +1,7 @@
 ﻿using MakelaarCounter.ApiRequests.Implementation;
 using MakelaarCounter.Constants;
 using MakelaarCounter.MessageHandlers;
+using MakelaarCounter.Parsers.Implementation;
 using MakelaarCounter.Services.Implementation;
 using MakelaarCounter.Validators.Implementation;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,8 @@ namespace MakelaarCounter
         {
             var httpClientFactory = GetHttpClientFactory(HttpClientNames.Funda);
             var jsonRequest = new JsonApiGetRequest(httpClientFactory);
-            var fetcher = new ListingFetcher(jsonRequest, new AgentCollectionResultValidator());
+            var fetcher = new ListingFetcher(jsonRequest, new AgentCollectionResultValidator(), 
+                new HttpResponseMessageJsonParser(), ConfigurationManager.AppSettings["apiKey"]);
             var counter = new AgentListingCounter(fetcher, new TaskBatcher(), new AgentCollectionResultParser());
             var resultsWithGarden = await counter.GetMostActiveAgents(10, "koop", "/amsterdam/tuin/");
             var results = await counter.GetMostActiveAgents(10, "koop", "/amsterdam/");

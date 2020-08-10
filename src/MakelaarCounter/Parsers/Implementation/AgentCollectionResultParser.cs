@@ -3,11 +3,11 @@ using MakelaarCounter.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MakelaarCounter.Services.Implementation
+namespace MakelaarCounter.Parsers.Implementation
 {
     public class AgentCollectionResultParser : IAgentCollectionResultParser
     {
-        public Result<ListingCountPerAgent> Parse(IEnumerable<Result<AgentCollection>> results, IList<Agent> initialResults)
+        public Result<ListingCountPerAgent> Parse(IList<Result<AgentCollection>> results, IList<Agent> initialResults)
         {
             var listingCountPerAgent = new ListingCountPerAgent(initialResults);
             if (results.Any(z => z.IsFailed))

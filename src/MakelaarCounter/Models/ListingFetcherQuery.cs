@@ -13,14 +13,14 @@ namespace MakelaarCounter.Models
             _stringBuilder.Append($"pagesize={pageSize}");
         }
 
-        public string Get(int page)
+        public string ToString(int page)
         {
             var stringBuilder = new StringBuilder(_stringBuilder.ToString());
             stringBuilder.Append($"&page={page}");
             return stringBuilder.ToString();
         }
 
-        public string Get()
+        public string FirstPageQueryToString()
         {
             return _stringBuilder.ToString();
         }

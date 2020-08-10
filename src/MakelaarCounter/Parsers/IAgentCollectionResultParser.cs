@@ -2,10 +2,10 @@
 using MakelaarCounter.Models;
 using System.Collections.Generic;
 
-namespace MakelaarCounter.Services
+namespace MakelaarCounter.Parsers
 {
     public interface IAgentCollectionResultParser
     {
-        Result<ListingCountPerAgent> Parse(IEnumerable<Result<AgentCollection>> results, IList<Agent> initialResults);
+        Result<ListingCountPerAgent> Parse(IList<Result<AgentCollection>> results, IList<Agent> initialResults);
     }
 }

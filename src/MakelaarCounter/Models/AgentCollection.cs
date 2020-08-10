@@ -7,12 +7,9 @@ namespace MakelaarCounter.Models
     public class AgentCollection
     {
         [JsonProperty("Objects")]
-        public List<Agent> FetchedAgents { get; private set; }
+        public List<Agent> FetchedAgents { get; set; }
 
         [JsonProperty("TotaalAantalObjecten")]
-        public int TotalFound { get; private set; }
-
-        [JsonProperty("$.Paging.AantalPaginas")]
-        public int PageCount { get; private set; }
+        public int TotalFound { get; set; }
     }
 }

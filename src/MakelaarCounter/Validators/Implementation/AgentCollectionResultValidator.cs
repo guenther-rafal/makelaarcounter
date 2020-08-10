@@ -9,26 +9,19 @@ namespace MakelaarCounter.Validators.Implementation
     {
         public Result Validate(Result<AgentCollection> resultToValidate, int expectedTotal, int page)
         {
-            try
+            var validationResult = Validate(resultToValidate);
+            if (validationResult.IsFailed)
             {
-                var validationResult = Validate(resultToValidate);
-                if (validationResult.IsFailed)
-                {
-                    return validationResult;
-                }
-
-                var fetchedData = resultToValidate.Value;
-                if (expectedTotal != fetchedData.TotalFound && page > 1)
-                {
-                    return Result.Fail(new Error("Concurrency issue, the data provided by the API has changed!"));
-                }
-
-                return Result.Ok();
+                return validationResult;
             }
-            catch (Exception e)
+
+            var fetchedData = resultToValidate.Value;
+            if (expectedTotal != fetchedData.TotalFound && page > 1)
             {
-                return Result.Ok();
+                return Result.Fail(new Error("Concurrency issue, the data provided by the API has changed!"));
             }
+
+            return Result.Ok();
         }
 
         public Result Validate(Result<AgentCollection> resultToValidate)

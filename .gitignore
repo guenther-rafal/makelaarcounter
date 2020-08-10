@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/src/MakelaarCounter/.vs/MakelaarCounter/v16
+/.vs
+/src/MakelaarCounter/bin/Debug/netcoreapp3.1
+/src/MakelaarCounter/obj
+/src/MakelaarCounterTests/bin/Debug/netcoreapp3.1
+/src/MakelaarCounterTests/obj

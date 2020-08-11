@@ -27,19 +27,20 @@ namespace MakelaarCounter.MessageHandlers
             _requestLog.Add(now);
             if (_requestLog.IsFull())
             {
-                await LimitDelay(now);
+                await Delay(now);
             }
             _semaphoreSlim.Release();
             return await base.SendAsync(request, cancellationToken);
         }
 
-        private async Task LimitDelay(DateTime now)
+        private async Task Delay(DateTime now)
         {
             var minimumRequestDateTime = now.Add(-_limitTime);
-            var delayTime = _requestLog.IsOverflooding(minimumRequestDateTime) ? (_requestLog.First() - minimumRequestDateTime) : TimeSpan.Zero;
+            var delayTime = _requestLog.IsOverflooding(minimumRequestDateTime) ? _limitTime : TimeSpan.Zero;
             if (delayTime > TimeSpan.Zero)
             {
                 await Task.Delay(delayTime);
+                _requestLog.DelayLast(delayTime);
             }
         }
     }

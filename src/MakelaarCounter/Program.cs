@@ -17,19 +17,24 @@ namespace MakelaarCounter
     {
         static async Task Main(string[] args)
         {
-            var httpClientFactory = GetHttpClientFactory(HttpClientNames.Funda);
-            var jsonRequest = new JsonApiGetRequest(httpClientFactory);
-            var fetcher = new ListingFetcher(jsonRequest, new AgentCollectionResultValidator(), 
-                new HttpResponseMessageJsonParser(), ConfigurationManager.AppSettings["apiKey"]);
-            var counter = new AgentListingCounter(fetcher, new TaskBatcher(), new AgentCollectionResultParser());
-            var resultsWithGarden = await counter.GetMostActiveAgents(10, "koop", "/amsterdam/tuin/");
+            await EnsureApiSanity();
+            var counter = CreateAgentListingCounter();
             var results = await counter.GetMostActiveAgents(10, "koop", "/amsterdam/");
+            var resultsWithGarden = await counter.GetMostActiveAgents(10, "koop", "/amsterdam/tuin/");
         }
 
-        private static void ConfigureClient(HttpClient client)
+        private static async Task EnsureApiSanity()
         {
-            var apiUrl = ConfigurationManager.AppSettings["fundaApiUrl"];
-            client.BaseAddress = new Uri(apiUrl);
+            await Task.Delay(60 * 1000);
+        }
+
+        private static AgentListingCounter CreateAgentListingCounter()
+        {
+            var httpClientFactory = GetHttpClientFactory(HttpClientNames.Funda);
+            var jsonRequest = new JsonApiGetRequest(httpClientFactory);
+            var fetcher = new ListingFetcher(jsonRequest, new AgentCollectionResultValidator(),
+                new HttpResponseMessageJsonParser(), ConfigurationManager.AppSettings["apiKey"]);
+            return new AgentListingCounter(fetcher, new TaskBatcher(), new AgentCollectionResultParser());
         }
 
         private static IHttpClientFactory GetHttpClientFactory(string clientName)
@@ -44,6 +49,12 @@ namespace MakelaarCounter
                 .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider.GetService<IHttpClientFactory>();
+        }
+
+        private static void ConfigureClient(HttpClient client)
+        {
+            var apiUrl = ConfigurationManager.AppSettings["fundaApiUrl"];
+            client.BaseAddress = new Uri(apiUrl);
         }
     }
 }

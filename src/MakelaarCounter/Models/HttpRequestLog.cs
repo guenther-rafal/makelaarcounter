@@ -30,7 +30,15 @@ namespace MakelaarCounter.Models
 
         public bool IsOverflooding(DateTime minimumRequestDateTime)
         {
-            return this.Count(x => x >= minimumRequestDateTime) == _maxSize;
+            return this.All(x => x >= minimumRequestDateTime);
+        }
+
+        public void DelayLast(TimeSpan delayTime)
+        {
+            var safetyBuffer = 100;
+            var delayedRequestTime = this.Last().Add(delayTime).AddMilliseconds(safetyBuffer);
+            RemoveAt(_maxSize - 1);
+            Add(delayedRequestTime);
         }
     }
 }
